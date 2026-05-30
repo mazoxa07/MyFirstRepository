@@ -43,14 +43,25 @@ class Recipe:
     def __str__(self):
         return self.title + " Ингридиенты:" +  ", ".join(str(ingridient) for ingridient in self.ingredients)
     
-ing1 = Ingredient("Мука", 500.0, "г")
-ing2 = Ingredient("Мука", 203.0, "г")
-ing3 = Ingredient("Мука", 100.0, "г")
-ingridients = []
-ingridients.append(ing1)
-recipe = Recipe("ПЛОВ", ingridients)
-recipe.add_ingredient(ing3)
-recipe1 = recipe.scale(4.0)
-print(recipe1)
-print(recipe)
-print(Recipe.is_valid_ratio(-3.14))
+class ShoppingList:
+    def __init__(self, _items) -> None:
+        self._items = _items
+    def add_recipe(self, recipe: Recipe, portions: float) -> None:
+        if portions <= 0: raise ValueError("Количество порций должно быть положительным")
+        scale_recipe = recipe.scale(portions)
+        for ingredient in scale_recipe.ingredients:
+            self._items.append((ingredient, recipe.title))
+    def remove_recipe(self,title: str):
+        for elem in self._items:
+            if elem[1] == title: self._items.remove(elem)
+    # def get_list() доделать
+
+    # def __add__(self, other: ShoppingList):
+
+class DietaryRecipe(Recipe):
+    def __init__(self, title: str, diet_type: str, ingridients: Ingredient) -> None:
+        super()
+        self.diet_type = diet_type
+    
+    #def scale(ratio: float) -> DietaryRecipe:
+    #def __str__(self):
