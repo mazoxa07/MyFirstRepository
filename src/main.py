@@ -54,9 +54,31 @@ class ShoppingList:
     def remove_recipe(self,title: str):
         for elem in self._items:
             if elem[1] == title: self._items.remove(elem)
-    # def get_list() доделать
-
-    # def __add__(self, other: ShoppingList):
+    def get_list(self) -> dict:
+        new_dict = {}
+        for item in self._items:
+            ingredient = item[0]
+            key = (ingredient.name, ingredient.unit)
+            if not key in new_dict:
+                new_dict[key] = ingredient.quantity
+            else:
+                new_dict[key] += ingredient.quantity
+        array = []
+        for item in new_dict:
+            ingredient = Ingredient(item[0], new_dict[item], item[1])
+            array.append(ingredient)
+        array.sort(key = lambda ingredient: ingredient.name)
+        
+        return array
+    def __add__(self, other: ShoppingList):
+        arr = []
+        for item in self._items:
+            copy = (item[0], item[1])
+            arr.append(copy)
+        for item in other._items:
+            copy = (item[0], item[1])
+            arr.append(copy)
+        return arr
 
 class DietaryRecipe(Recipe):
     def __init__(self, title: str, diet_type: str, ingridients: Ingredient) -> None:
@@ -65,3 +87,4 @@ class DietaryRecipe(Recipe):
     
     #def scale(ratio: float) -> DietaryRecipe:
     #def __str__(self):
+
